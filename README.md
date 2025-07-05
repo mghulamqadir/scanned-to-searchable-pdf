@@ -109,7 +109,7 @@ ocrmypdf.ocr(
     deskew=True,
     skip_text=True,
     output_type="pdfa-2",
-    jobs=num_cores
+    jobs=num_cores # ⚠️ it will use all core of your processor make change accordinng to your need
 )
 ```
 
