@@ -2,14 +2,11 @@ import os
 import ocrmypdf
 import multiprocessing
 
-# Set input and output directories
 input_dir = "input"
 output_dir = "output"
 
-# Use all available CPU cores
 num_cores = multiprocessing.cpu_count()
 
-# Create output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
 
 for filename in os.listdir(input_dir):
@@ -26,7 +23,7 @@ for filename in os.listdir(input_dir):
                 deskew=True,
                 skip_text=True,
                 output_type="pdfa-2",
-                jobs=num_cores  # ✅ this enables parallel processing
+                jobs=num_cores
             )
             print(f"✅ OCR complete for: {filename}")
         except Exception as e:
