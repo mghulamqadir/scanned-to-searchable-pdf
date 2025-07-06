@@ -1,36 +1,28 @@
 {
-  "name": "Python 3",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "name": "Scanned to Searchable PDF",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye",
   "customizations": {
     "codespaces": {
-      "openFiles": [
-        "README.md",
-        "main.py"
-      ]
+      "openFiles": ["README.md", "main.py"]
     },
     "vscode": {
-      "settings": {},
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance"
       ]
     }
   },
-  "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt install python3 python3-venv python3-pip ghostscript tesseract-ocr && sudo apt upgrade -y && sudo xargs apt install -y <packages.txt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; pip3 install --user streamlit; echo '✅ Packages installed and Requirements met'",
-  "postAttachCommand": {
-    "server": "streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false"
-  },
+  "features": {},
+  "postCreateCommand": "bash .devcontainer/setup.sh",
   "portsAttributes": {
     "8501": {
-      "label": "Application",
+      "label": "Streamlit App",
       "onAutoForward": "openPreview"
     }
   },
-  "forwardPorts": [
-    8501
-  ],
+  "forwardPorts": [8501],
   "containerEnv": {
     "PATH": "/usr/bin/tesseract:${PATH}"
-  }
+  },
+  "overrideCommand": false
 }
