@@ -1,17 +1,19 @@
-# 🧾 Scanned to Searchable PDF
+# 🧾 Scanned to Searchable PDF (Web App)
 
-Convert scanned PDF documents into **searchable**, **OCR-processed**, and **PDF/A-2 compliant** files using [`ocrmypdf`](https://ocrmypdf.readthedocs.io/).  
+Convert scanned PDF documents into **searchable**, **OCR-processed**, and **PDF/A-2 compliant** files using [`ocrmypdf`](https://ocrmypdf.readthedocs.io/), powered by an interactive **Streamlit** interface.
 Supports **parallel processing** to handle large documents efficiently.
 
 ---
 
 ## 📌 Features
 
-- ✅ Converts scanned PDFs to searchable PDFs
-- ✅ Skips pages that already contain text (`skip_text=True`)
-- ✅ Uses all CPU cores for faster processing (`jobs=N`)
-- ✅ Output is **PDF/A-2 compliant** for long-term archival
-- ✅ Batch processes all PDFs in the `input/` directory
+* ✅ Upload scanned PDFs via browser
+* ✅ Converts scanned PDFs to searchable PDFs (with selectable text)
+* ✅ Skips pages that already contain text (`skip_text=True`)
+* ✅ Uses all CPU cores minus 2 for fast parallel processing (`jobs=N`)
+* ✅ Output is **PDF/A-2 compliant** for long-term archival
+* ✅ Instant download of processed PDF from the browser
+* ✅ Fully cross-platform (works on Linux, Windows, macOS)
 
 ---
 
@@ -19,12 +21,10 @@ Supports **parallel processing** to handle large documents efficiently.
 
 ```
 scanned-to-searchable-pdf/
-├── input/                # Place all scanned PDFs here
-├── output/               # Processed searchable PDFs will be saved here
-├── main.py               # Main script
-└── README.md             # This file
-
-````
+├── output/               # Searchable PDFs saved here
+├── app.py                # Streamlit OCR web app
+├── README.md             # This file
+```
 
 ---
 
@@ -35,7 +35,7 @@ scanned-to-searchable-pdf/
 ```bash
 git clone https://github.com/mghulamqadir/scanned-to-searchable-pdf.git
 cd scanned-to-searchable-pdf
-````
+```
 
 ---
 
@@ -53,63 +53,65 @@ source .venv/bin/activate
 
 # Install dependencies
 pip install --upgrade pip
-pip install ocrmypdf
+pip install ocrmypdf streamlit PyPDF2
 ```
 
 #### 🔹 Windows
 
 1. ✅ Install [Python 3.10+](https://www.python.org/downloads/)
-2. ✅ Install [Tesseract OCR for Windows](https://github.com/tesseract-ocr/tesseract/wiki#windows):
+2. ✅ Install [Tesseract OCR for Windows](https://github.com/UB-Mannheim/tesseract/wiki)
 
-   * Download from [UB Mannheim builds](https://github.com/UB-Mannheim/tesseract/wiki)
    * Add Tesseract to your **System PATH**
-3. ✅ Install [Ghostscript for Windows](https://www.ghostscript.com/download/gsdnld.html):
+3. ✅ Install [Ghostscript for Windows](https://www.ghostscript.com/download/gsdnld.html)
 
    * Add `gswin64c.exe` to your PATH
-4. ✅ Open Command Prompt:
+4. ✅ Create and activate a virtual environment:
 
 ```cmd
 python -m venv .venv
 .venv\Scripts\activate
 pip install --upgrade pip
-pip install ocrmypdf
+pip install ocrmypdf streamlit PyPDF2
 ```
 
 ---
 
 ## ▶️ Usage
 
-1. Place your scanned PDF files in the `input/` folder.
-2. Run the script:
+1. Run the Streamlit app:
 
 ```bash
-python main.py
+streamlit run app.py
 ```
 
-3. Processed PDFs will appear in the `output/` directory, prefixed with `OCR_`.
+2. Open the browser and upload your scanned PDF.
+3. Click **Start OCR** to begin processing.
+4. Download the searchable output once finished.
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Configuration Notes
 
-* `language="eng"` — OCR language (change to `"eng+urd"` for English + Urdu, etc.)
-* `output_type="pdfa-2"` — Output format; use `"pdf"` for standard PDF if PDF/A is not needed
-* `skip_text=True` — Skips OCR on pages that already have selectable text
-* `jobs=N` — Number of CPU cores for parallel page processing (auto-detected)
+* `language="eng"` — OCR language (you can change to `"eng+urd"` for English + Urdu, etc.)
+* `output_type="pdfa-2"` — Output format (`pdfa-2` is for archival)
+* `skip_text=True` — Skips OCR for pages with existing text
+* `jobs=N` — Number of CPU cores to use (`cpu_count() - 2` is used for balance)
 
 ---
 
-## 🧪 Example
+## 🧪 Behind the Scenes
+
+The core OCR functionality uses the following:
 
 ```python
 ocrmypdf.ocr(
-    input_path,
-    output_path,
+    input_file=str(input_path),
+    output_file=str(output_path),
     language="eng",
     deskew=True,
     skip_text=True,
     output_type="pdfa-2",
-    jobs=num_cores # ⚠️ it will use all core of your processor make change accordinng to your need
+    jobs=multiprocessing.cpu_count() - 2 # Use all cores minus 2 for balance
 )
 ```
 
@@ -124,4 +126,4 @@ OCR engine used: [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 
 ## 🤝 Contributions
 
-Pull requests are welcome! Please open an issue first for major changes.
+Pull requests are welcome! Please open an issue first if you're planning major changes.
