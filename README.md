@@ -1,5 +1,7 @@
 # 🧾 Scanned to Searchable PDF (Web App)
 
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mghulamqadir/scanned-to-searchable-pdf/blob/colab/app-colab.py.ipynb)
+
 Convert scanned PDF documents into **searchable**, **OCR-processed**, and **PDF/A-2 compliant** files using [`ocrmypdf`](https://ocrmypdf.readthedocs.io/), powered by an interactive **Streamlit** interface.
 Supports **parallel processing** to handle large documents efficiently.
 
@@ -7,13 +9,13 @@ Supports **parallel processing** to handle large documents efficiently.
 
 ## 📌 Features
 
-* ✅ Upload scanned PDFs via browser
+* ✅ Upload scanned PDFs via browser (local or Google Colab)
 * ✅ Converts scanned PDFs to searchable PDFs (with selectable text)
 * ✅ Skips pages that already contain text (`skip_text=True`)
 * ✅ Uses all CPU cores minus 2 for fast parallel processing (`jobs=N`)
 * ✅ Output is **PDF/A-2 compliant** for long-term archival
-* ✅ Instant download of processed PDF from the browser
-* ✅ Fully cross-platform (works on Linux, Windows, macOS)
+* ✅ Instant download of processed PDF
+* ✅ Fully cross-platform (works on Linux, Windows, macOS, or Colab)
 
 ---
 
@@ -23,12 +25,31 @@ Supports **parallel processing** to handle large documents efficiently.
 scanned-to-searchable-pdf/
 ├── output/               # Searchable PDFs saved here
 ├── app.py                # Streamlit OCR web app
+├── app-colab.py.ipynb    # Google Colab version (Jupyter notebook)
 ├── README.md             # This file
 ```
 
 ---
 
-## 🛠️ Installation
+## 🚀 Run in Google Colab
+
+If you don’t want to install anything locally, use the hosted notebook:
+
+👉 **[Open in Google Colab](https://colab.research.google.com/github/mghulamqadir/scanned-to-searchable-pdf/blob/colab/app-colab.py.ipynb)**
+
+### 🔹 Colab Features:
+
+* No setup required — ready to run in seconds
+* Upload scanned PDFs and download searchable PDFs
+* Uses the same `ocrmypdf` backend
+* Ideal for quick OCR jobs on the go
+
+---
+
+## 🛠️ Installation (Local)
+
+<details>
+<summary><strong>Click to expand local setup instructions</strong></summary>
 
 ### ✅ 1. Clone the Repository
 
@@ -78,49 +99,31 @@ pip install ocrmypdf streamlit PyPDF2
 
 ## ▶️ Usage
 
-1. Run the Streamlit app:
+### 🔹 Local App
 
 ```bash
 streamlit run app.py
 ```
 
-2. Open the browser and upload your scanned PDF.
-3. Click **Start OCR** to begin processing.
-4. Download the searchable output once finished.
+### 🔹 Colab
+
+Click the badge above or [this link](https://colab.research.google.com/github/mghulamqadir/scanned-to-searchable-pdf/blob/colab/app-colab.py.ipynb)
 
 ---
 
 ## ⚙️ Configuration Notes
 
-* `language="eng"` — OCR language (you can change to `"eng+urd"` for English + Urdu, etc.)
-* `output_type="pdfa-2"` — Output format (`pdfa-2` is for archival)
-* `skip_text=True` — Skips OCR for pages with existing text
-* `jobs=N` — Number of CPU cores to use (`cpu_count() - 2` is used for balance)
-
----
-
-## 🧪 Behind the Scenes
-
-The core OCR functionality uses the following:
-
-```python
-ocrmypdf.ocr(
-    input_file=str(input_path),
-    output_file=str(output_path),
-    language="eng",
-    deskew=True,
-    skip_text=True,
-    output_type="pdfa-2",
-    jobs=multiprocessing.cpu_count() - 2 # Use all cores minus 2 for balance
-)
-```
+* `language="eng"` — OCR language (can be changed to `"eng+urd"` for English + Urdu)
+* `output_type="pdfa-2"` — Use `"pdf"` for non-archival output
+* `skip_text=True` — Skips OCR on pages with existing text
+* `jobs=N` — Number of CPU cores (`cpu_count() - 2` by default)
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
-OCR engine used: [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
+MIT License
+OCR engine: [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 
 ---
 
