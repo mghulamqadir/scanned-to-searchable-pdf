@@ -29,5 +29,8 @@
   },
   "forwardPorts": [
     8501
-  ]
+  ],
+  "containerEnv": {
+    "PATH": "/usr/bin/tesseract:${PATH}"
+  }
 }
